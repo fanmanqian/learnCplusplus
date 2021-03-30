@@ -1,0 +1,51 @@
+ ///
+ /// @file    io1.cc
+ /// @author  mfm(2563965485@qq.com)
+ /// @date    2020-11-20 10:41:11
+ ///
+ 
+#include <iostream>
+#include <limits>
+#include <string>
+using std::cout;
+using std::cin;
+using std::endl;
+using std::string;
+
+void printCinStatus()
+{
+	cout << "cin's badbit = " << cin.bad() << endl;
+	cout << "cin's failbit = " << cin.fail() << endl;
+	cout << "cin's eofbit = " << cin.eof() << endl;
+	cout << "cin's goodbit = " << cin.good() << endl;
+
+}
+
+void test0()
+{
+	//流对象内部都有缓冲区的
+	cout << "sizeof(cin) = " << sizeof(cin) << endl;
+	cout << "sizeof(cout) = " << sizeof(cout) << endl;
+
+	int number = 0;
+	printCinStatus();
+	//cin.goodbit作为判断条件 虽然返回值是basic_istream& 但是它会发生隐式转换
+	//while(cin >> number, !cin.eof()) 逗号表达式 以最后一个的值作为整个表达式的值 cin.eof来判断 就是说没到达文件末尾就会一直要求你输入 但是这种情况输入错误的值就会进入死循环
+	while(cin >> number)//如果输入的数据不是int型 流的状态goodbit会变为0 failbit的状态会变为1
+	{             //此时流不能再正常工作
+		cout << "number = " << number << endl;
+	}
+	printCinStatus();
+	cin.clear();//重置流状态
+	cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');//清空缓冲区
+	cout << "重置流状态" << endl;
+	printCinStatus();
+	string s1;
+	cin >> s1;
+	cout << "s1 = " << s1 << endl;
+}
+int main(void)
+{
+	test0();
+	return 0;
+}

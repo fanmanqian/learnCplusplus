@@ -1,0 +1,6 @@
+main.exe:hello.o
+	g++ hello.o -o main.exe
+#hello.o:hello.cc  ## .o自动依赖于.cc .cpp文件所以这两行可以不写的
+#	g++ -c hello.cc -o hello.o
+clean:
+	rm -rf main.exe
